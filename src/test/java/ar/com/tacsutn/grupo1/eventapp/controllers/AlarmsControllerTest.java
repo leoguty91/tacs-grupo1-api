@@ -129,7 +129,7 @@ public class AlarmsControllerTest extends ControllerTest {
     @Test
     public void shouldNotFetchAlarmIfDoesNotExist() throws Exception {
         this.getMockMvc()
-                .perform(get("/api/v1/alarms/4/fetch"))
+                .perform(get("/api/v1/alarms/10000/fetch"))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
