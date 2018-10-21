@@ -3,6 +3,7 @@ package ar.com.tacsutn.grupo1.eventapp.services;
 import ar.com.tacsutn.grupo1.eventapp.client.EventFilter;
 import ar.com.tacsutn.grupo1.eventapp.models.Alarm;
 import ar.com.tacsutn.grupo1.eventapp.models.User;
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
@@ -42,7 +42,7 @@ public class AlarmServiceTest {
 
     @Test
     public void shouldContainOneAlarm() {
-        assertEquals((long) this.alarmService.getTotalAlarmsByUserId(user1.getId()), 1);
+        assertEquals(1, this.alarmService.getTotalAlarmsByUserId(user1.getId()));
     }
 
     @Test
@@ -58,12 +58,12 @@ public class AlarmServiceTest {
 
     @Test(expected = NoSuchElementException.class)
     public void getExceptionWhenAlarmIsNotFound () {
-        userService.getById(alarm1.getId() + 123).orElseThrow(NoSuchElementException::new);
+        userService.getById(1000).orElseThrow(NoSuchElementException::new);
     }
 
     @Test
     public void canRemoveAlarm() {
-        assertEquals(1, (long) alarmService.getTotalAlarmsByUserId(user1.getId()));
+        assertEquals(1, alarmService.getTotalAlarmsByUserId(user1.getId()));
 
         PageRequest pageRequest = PageRequest.of(0, 50);
         Page<Alarm> alarms = alarmService.getAllAlarmsByUserId(user1.getId(), pageRequest);
@@ -71,7 +71,7 @@ public class AlarmServiceTest {
         assertEquals(1, alarms.getTotalElements());
         alarms.forEach(alarmService::remove);
 
-        assertEquals(0, (long) alarmService.getTotalAlarmsByUserId(user1.getId()));
+        assertEquals(0, alarmService.getTotalAlarmsByUserId(user1.getId()));
 
         Page<Alarm> alarmsReload = alarmService.getAllAlarmsByUserId(user1.getId(), pageRequest);
 
@@ -79,8 +79,8 @@ public class AlarmServiceTest {
     }
 
     private void createUsers() {
-        user1 = new User("JohnDoemann", "1234", "John", "Doemann", "john.doemann@test.com", true, new Date(), null);
-        user2 = new User("JanetDoemann2", "1234", "Janet", "Doemann", "janet.doemann@test.com", true, new Date(), null);
+        user1 = new User(RandomStringUtils.randomAlphabetic(10), "1234", "John", "Doemann", "john.doemann@test.com", true, new Date(), null);
+        user2 = new User(RandomStringUtils.randomAlphabetic(10), "1234", "Janet", "Doemann", "janet.doemann@test.com", true, new Date(), null);
         userService.create(user1);
         userService.create(user2);
     }
