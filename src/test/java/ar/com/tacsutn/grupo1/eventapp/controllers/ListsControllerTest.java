@@ -2,6 +2,7 @@ package ar.com.tacsutn.grupo1.eventapp.controllers;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,15 +24,17 @@ public class ListsControllerTest extends ControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
-    @Test
-    public void canPostLists() throws Exception {
-        this.getMockMvc()
-                .perform(post("/api/v1/lists?name=List3"))
-                .andExpect(status().isOk());
-    }
+  @WithMockUser(roles = "USER")
+  @Transactional
+  @DirtiesContext
+  @Test
+  public void canPostLists() throws Exception {
+    this.getMockMvc()
+            .perform(post("/api/v1/lists")
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content("{ \"name\": \"List1234\" }"))
+            .andExpect(status().isOk());
+  }
 
     @Ignore
     @WithMockUser(roles = "USER")
@@ -41,8 +44,8 @@ public class ListsControllerTest extends ControllerTest {
     public void canPostListsIfItExists() throws Exception {
         this.getMockMvc()
                 .perform(post("/api/v1/lists?name=List1"))
-                .andExpect(status().isForbidden());
-    }
+          .andExpect(status().isForbidden());
+}
 
     @WithMockUser(roles = "USER")
     @Transactional
