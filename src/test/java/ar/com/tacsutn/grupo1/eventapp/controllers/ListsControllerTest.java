@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class ListsControllerTest extends ControllerTest {
@@ -21,7 +20,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canGetLists() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/lists"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -32,7 +30,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canPostLists() throws Exception {
         this.getMockMvc()
                 .perform(post("/api/v1/lists?name=List3"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -44,7 +41,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canPostListsIfItExists() throws Exception {
         this.getMockMvc()
                 .perform(post("/api/v1/lists?name=List1"))
-                .andDo(print())
                 .andExpect(status().isForbidden());
     }
 
@@ -55,7 +51,6 @@ public class ListsControllerTest extends ControllerTest {
     public void shouldNotPostListsIfNoNameGiven() throws Exception {
         this.getMockMvc()
                 .perform(post("/api/v1/lists"))
-                .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
@@ -66,7 +61,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canGetListsById() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/lists/1"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -77,7 +71,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canPutListsById() throws Exception {
         this.getMockMvc()
                 .perform(put("/api/v1/lists/1?name=Test"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -88,7 +81,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canPutListsByIdWithSameName() throws Exception {
         this.getMockMvc()
                 .perform(put("/api/v1/lists/1?name=List1"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -99,7 +91,6 @@ public class ListsControllerTest extends ControllerTest {
     public void shouldNotPutListsByIdIfNotNameGiven() throws Exception {
         this.getMockMvc()
                 .perform(put("/api/v1/lists/500"))
-                .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
@@ -110,7 +101,6 @@ public class ListsControllerTest extends ControllerTest {
     public void shouldNotPutListsByIdIfNotExists() throws Exception {
         this.getMockMvc()
                 .perform(put("/api/v1/lists/500?name=Test"))
-                .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
@@ -121,7 +111,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canDeleteListsById() throws Exception {
         this.getMockMvc()
                 .perform(delete("/api/v1/lists/1"))
-                .andDo(print())
                 .andExpect(status().isNoContent());
     }
 
@@ -132,7 +121,6 @@ public class ListsControllerTest extends ControllerTest {
     public void shouldNotDeleteListsByIdIfNotExists() throws Exception {
         this.getMockMvc()
                 .perform(delete("/api/v1/lists/500"))
-                .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
@@ -143,7 +131,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canGetListsEventsById() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/lists/1/events"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -154,7 +141,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canPostListsEventsById() throws Exception {
         this.getMockMvc()
                 .perform(post("/api/v1/lists/1/events/?event_id=1"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -165,7 +151,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canPostListsEventsByIdWithExistingId() throws Exception {
         this.getMockMvc()
                 .perform(post("/api/v1/lists/1/events/?event_id=0"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -176,7 +161,6 @@ public class ListsControllerTest extends ControllerTest {
     public void shouldNotPostListsEventsByIdIfIdIsNotQueried() throws Exception {
         this.getMockMvc()
                 .perform(post("/api/v1/lists/1/events"))
-                .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
@@ -187,7 +171,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canDeleteListsEventsById() throws Exception {
         this.getMockMvc()
                 .perform(delete("/api/v1/lists/1/events/0"))
-                .andDo(print())
                 .andExpect(status().isNoContent());
     }
 
@@ -198,7 +181,6 @@ public class ListsControllerTest extends ControllerTest {
     public void shouldNotDeleteListsEventsByIdIfEventIsNotSpecified() throws Exception {
         this.getMockMvc()
                 .perform(delete("/api/v1/lists/1/events"))
-                .andDo(print())
                 .andExpect(status().isMethodNotAllowed());
     }
 
@@ -209,7 +191,6 @@ public class ListsControllerTest extends ControllerTest {
     public void shouldNotDeleteListsEventsByIdIfEventDoesNotExist() throws Exception {
         this.getMockMvc()
                 .perform(delete("/api/v1/lists/1/events/8000"))
-                .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
@@ -220,7 +201,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canCompareLists() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/lists/compare?list1=1&list2=2"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -231,7 +211,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canCompareListsIsAssociative() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/lists/compare?list2=2&list1=1"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -242,7 +221,6 @@ public class ListsControllerTest extends ControllerTest {
     public void canCompareListsIfEqual() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/lists/compare?list1=1&list2=1"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -253,7 +231,6 @@ public class ListsControllerTest extends ControllerTest {
     public void userShouldNotCompareLists() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/lists/compare?list1=1&list2=2"))
-                .andDo(print())
                 .andExpect(status().isForbidden());
     }
 
@@ -264,7 +241,6 @@ public class ListsControllerTest extends ControllerTest {
     public void shouldNotCompareListsIfNotSpecified() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/lists/compare"))
-                .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
@@ -275,7 +251,6 @@ public class ListsControllerTest extends ControllerTest {
     public void shouldNotCompareListsIfQueriesAreMissing() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/lists/compare?list1=1"))
-                .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
@@ -287,7 +262,6 @@ public class ListsControllerTest extends ControllerTest {
     public void shouldNotCompareListsIfOneDoesNotExist() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/lists/compare?list1=1&list2=800"))
-                .andDo(print())
                 .andExpect(status().isNotFound());
     }
 }
