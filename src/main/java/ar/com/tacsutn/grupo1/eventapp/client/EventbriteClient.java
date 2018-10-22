@@ -79,7 +79,7 @@ public class EventbriteClient {
                 .queryParam("token", TOKEN);
     }
 
-    RestTemplate getRestTemplate() {
+    public RestTemplate getRestTemplate() {
         return restTemplate;
     }
 }
