@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/leoguty91/tacs-grupo1-api.svg?branch=master)](https://travis-ci.org/leoguty91/tacs-grupo1-api)
+
 **TACS Grupo 1**
 --
 
