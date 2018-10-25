@@ -1,6 +1,7 @@
 package ar.com.tacsutn.grupo1.eventapp.controllers;
 
 import ar.com.tacsutn.grupo1.eventapp.BootstrapData;
+import ar.com.tacsutn.grupo1.eventapp.EventAppApplication;
 import ar.com.tacsutn.grupo1.eventapp.client.EventFilter;
 import ar.com.tacsutn.grupo1.eventapp.models.Alarm;
 import ar.com.tacsutn.grupo1.eventapp.models.EventId;
@@ -40,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = { EventAppApplication.class })
 public abstract class ControllerTest {
     @MockBean
     private BootstrapData bootstrapData;

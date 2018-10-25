@@ -1,5 +1,6 @@
 package ar.com.tacsutn.grupo1.eventapp.client;
 
+import ar.com.tacsutn.grupo1.eventapp.EventAppApplication;
 import ar.com.tacsutn.grupo1.eventapp.models.Event;
 import ar.com.tacsutn.grupo1.eventapp.models.RestPage;
 import org.junit.Assert;
@@ -26,7 +27,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = { EventAppApplication.class })
 public class EventbriteClientTest {
 
     private MockRestServiceServer mockServer;

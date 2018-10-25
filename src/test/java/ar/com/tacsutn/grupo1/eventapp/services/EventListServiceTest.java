@@ -1,27 +1,36 @@
 package ar.com.tacsutn.grupo1.eventapp.services;
 
 import ar.com.tacsutn.grupo1.eventapp.BootstrapData;
+import ar.com.tacsutn.grupo1.eventapp.client.EventbriteClient;
 import ar.com.tacsutn.grupo1.eventapp.models.Event;
 import ar.com.tacsutn.grupo1.eventapp.models.EventId;
 import ar.com.tacsutn.grupo1.eventapp.models.EventList;
 import ar.com.tacsutn.grupo1.eventapp.models.User;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 import static org.junit.Assert.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.anything;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -43,6 +52,10 @@ public class EventListServiceTest {
     private EventListService listService;
 
     private EventList eventList1, eventList2, eventList3;
+
+    @Autowired
+    private EventbriteClient eventbriteClient;
+
 
     @Before
     public void before() {
@@ -139,8 +152,9 @@ public class EventListServiceTest {
 
     @Transactional
     @Test
-    @Ignore
-    public void canGetCommonEventsFromTwoDifferentEventList() {
+    public void canGetCommonEventsFromTwoDifferentEventList() throws IOException {
+        mockEvent();
+
         List<Event> commonEvents = getCommonEvents(eventList1, eventList3);
 
         assertEquals(event1.getId(), commonEvents.get(0).getId());
@@ -148,8 +162,9 @@ public class EventListServiceTest {
 
     @Transactional
     @Test
-    @Ignore
-    public void gettingCommonEventsIsAssociative() {
+    public void gettingCommonEventsIsAssociative() throws IOException {
+        mockEvent();
+
         List<Event> commonEvents = getCommonEvents(eventList3, eventList1);
 
         assertEquals(event1.getId(), commonEvents.get(0).getId());
@@ -157,8 +172,9 @@ public class EventListServiceTest {
 
     @Transactional
     @Test
-    @Ignore
-    public void canGetCommonEventsEqualToAllIfSameEventList() {
+    public void canGetCommonEventsEqualToAllIfSameEventList() throws IOException {
+        mockEvent();
+
         List<Event> commonEvents = getCommonEvents(eventList1, eventList1);
 
         assertEquals(eventList1.getEvents().size(), commonEvents.size());
@@ -253,5 +269,30 @@ public class EventListServiceTest {
 
     private List<Event> getCommonEvents(Long id1, Long id2) {
         return listService.getCommonEvents(id1, id2, PageRequest.of(0, 50)).getContent();
+    }
+
+    private void mockEvent() throws IOException {
+        RestTemplate restTemplate = eventbriteClient.getRestTemplate();
+        MockRestServiceServer mockServer = MockRestServiceServer.bindTo(restTemplate).build();
+
+        mockServer.expect(anything())
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(getJson(), MediaType.APPLICATION_JSON));
+    }
+
+    private byte[] getJson() throws IOException {
+        String jsonPath = getPath();
+        return Files.readAllBytes(new File(jsonPath).toPath());
+    }
+
+    private String getPath() {
+        String filename = "sample-event-response.json";
+        String[] arr = this.getClass().getName().split("\\.");
+        arr[arr.length - 1] = filename;
+
+        Path testPath = Paths.get("src", "test", "java");
+        Path path = Paths.get(testPath.toString(), arr);
+
+        return path.toString();
     }
 }

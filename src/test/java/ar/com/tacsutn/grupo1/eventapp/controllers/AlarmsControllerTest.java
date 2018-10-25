@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,7 +23,6 @@ public class AlarmsControllerTest extends ControllerTest {
                 .perform(post("/api/v1/alarms")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content("{ \"address\": \"argentina\", \"keyword\": \"x\", \"name\": \"x\", \"price\": \"100\", \"startDateFrom\": \"2018-10-08T22:54:28.201Z\", \"startDateTo\": \"2018-10-08T22:54:28.201Z\" }"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -35,7 +33,6 @@ public class AlarmsControllerTest extends ControllerTest {
     public void canGetAlarm() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/alarms/1").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("alarm1"))
                 .andExpect(jsonPath("$.id").value("1"));
@@ -48,8 +45,7 @@ public class AlarmsControllerTest extends ControllerTest {
     @Test
     public void shouldNotGetAlarmIfNotExists() throws Exception {
         this.getMockMvc()
-                .perform(get("/api/v1/alarms/4"))
-                .andDo(print())
+                .perform(get("/api/v1/alarms/1000"))
                 .andExpect(status().isNotFound());
     }
 
@@ -62,7 +58,6 @@ public class AlarmsControllerTest extends ControllerTest {
                 .perform(put("/api/v1/alarms/1")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content("{ \"address\": \"argentina\", \"keyword\": \"x\", \"name\": \"x\", \"price\": \"100\", \"startDateFrom\": \"2018-10-08T22:54:28.201Z\", \"startDateTo\": \"2018-10-08T22:54:28.201Z\" }"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -72,10 +67,9 @@ public class AlarmsControllerTest extends ControllerTest {
     @Test
     public void shouldNotPutAlarmIfNotExists() throws Exception {
         this.getMockMvc()
-                .perform(put("/api/v1/alarms/4")
+                .perform(put("/api/v1/alarms/1000")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content("{ \"address\": \"argentina\", \"keyword\": \"x\", \"name\": \"x\", \"price\": \"100\", \"startDateFrom\": \"2018-10-08T22:54:28.201Z\", \"startDateTo\": \"2018-10-08T22:54:28.201Z\" }"))
-                .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
@@ -86,7 +80,6 @@ public class AlarmsControllerTest extends ControllerTest {
     public void canDeleteAlarm() throws Exception {
         this.getMockMvc()
                 .perform(delete("/api/v1/alarms/1"))
-                .andDo(print())
                 .andExpect(status().isNoContent());
     }
 
@@ -96,8 +89,7 @@ public class AlarmsControllerTest extends ControllerTest {
     @Test
     public void shouldNotDeleteAlarmIfNotExists() throws Exception {
         this.getMockMvc()
-                .perform(delete("/api/v1/alarms/4"))
-                .andDo(print())
+                .perform(delete("/api/v1/alarms/1000"))
                 .andExpect(status().isNotFound());
     }
 
@@ -108,7 +100,6 @@ public class AlarmsControllerTest extends ControllerTest {
     public void canFetchAlarmPagedEvents() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/alarms/1/fetch"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -119,7 +110,6 @@ public class AlarmsControllerTest extends ControllerTest {
     public void canFetchAlarmEvents() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/alarms/1/fetch?page=1"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -129,8 +119,7 @@ public class AlarmsControllerTest extends ControllerTest {
     @Test
     public void shouldNotFetchAlarmIfDoesNotExist() throws Exception {
         this.getMockMvc()
-                .perform(get("/api/v1/alarms/4/fetch"))
-                .andDo(print())
+                .perform(get("/api/v1/alarms/10000/fetch"))
                 .andExpect(status().isNotFound());
     }
 
@@ -141,7 +130,6 @@ public class AlarmsControllerTest extends ControllerTest {
     public void shouldNotFetchAlarmEventsIfPageDoesNotExist() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/alarms/1/fetch/?page=100000000"))
-                .andDo(print())
                 .andExpect(status().isNotFound());
 
     }
@@ -153,7 +141,6 @@ public class AlarmsControllerTest extends ControllerTest {
     public void canGetTodayAlarms() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/alarms/today"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -164,7 +151,6 @@ public class AlarmsControllerTest extends ControllerTest {
     public void canGetTodayAlarmsSortedDesc() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/alarms/today/?sort=desc"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -175,7 +161,6 @@ public class AlarmsControllerTest extends ControllerTest {
     public void canGetTodayAlarmsSortedAsc() throws Exception {
         this.getMockMvc()
                 .perform(get("/api/v1/alarms/today/?sort=asc"))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 }
