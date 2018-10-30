@@ -267,7 +267,7 @@ public class EventListServiceTest {
         return listService.getCommonEvents(eventList1.getId(), eventList2.getId(), PageRequest.of(0, 50)).getContent();
     }
 
-    private List<Event> getCommonEvents(Long id1, Long id2) {
+    private List<Event> getCommonEvents(String id1, String id2) {
         return listService.getCommonEvents(id1, id2, PageRequest.of(0, 50)).getContent();
     }
 

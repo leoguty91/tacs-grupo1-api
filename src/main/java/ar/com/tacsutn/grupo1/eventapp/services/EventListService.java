@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -36,12 +37,12 @@ public class EventListService {
     }
 
     @Transactional
-    public Optional<EventList> getById(Long id) {
+    public Optional<EventList> getById(String id) {
         return eventListRepository.findById(id);
     }
 
     @Transactional
-    public Optional<EventList> getById(User user, Long id) {
+    public Optional<EventList> getById(User user, String id) {
         return getById(id).filter(list -> list.getUser().equals(user));
     }
 
@@ -77,7 +78,7 @@ public class EventListService {
     }
 
     @Transactional
-    public void delete(User user, Long id) {
+    public void delete(User user, String id) {
         EventList eventList = getById(user, id)
                 .orElseThrow(NoSuchElementException::new);
 
@@ -85,7 +86,7 @@ public class EventListService {
     }
 
     @Transactional
-    public EventList rename(User user, Long id, String newName) {
+    public EventList rename(User user, String id, String newName) {
         EventList eventList = getById(user, id)
                 .orElseThrow(NoSuchElementException::new);
 
@@ -94,7 +95,7 @@ public class EventListService {
     }
 
     @Transactional
-    public Optional<EventList> addEvent(User user, Long id, EventId event) {
+    public Optional<EventList> addEvent(User user, String id, EventId event) {
         return getById(user, id).map(eventList -> {
             eventList.getEvents().add(event);
             return eventListRepository.save(eventList);
@@ -102,7 +103,7 @@ public class EventListService {
     }
 
     @Transactional
-    public Page<Event> getCommonEvents(Long id1, Long id2, Pageable pageable) {
+    public Page<Event> getCommonEvents(String id1, String id2, Pageable pageable) {
         EventList list1 = getById(id1)
                 .orElseThrow(NoSuchElementException::new);
 
@@ -135,11 +136,22 @@ public class EventListService {
         return new PageImpl<>(list.subList(start, end), pageable, list.size());
     }
 
-    public long getTotalEventListByUserId(long user_id){
+    public long getTotalEventListByUserId(String user_id){
         return eventListRepository.countAllByUserId(user_id);
     }
 
     public Page<EventList> getListsByUserId(User user, Pageable pageable) {
         return eventListRepository.findAllByUser(user, pageable);
     }
-}
+
+    public List<EventList> findListByEvent(EventId eventId){
+        return eventListRepository.findAllByEventId(eventId);
+    }
+
+    public Page<EventId> getListEvents(EventList eventList, Pageable pageable) {
+        //todo ver que devuelvo
+      //  return Utils.listToPage(new ArrayList<>(eventList.getEvents()), pageable);
+        return null;
+    }
+
+    }
