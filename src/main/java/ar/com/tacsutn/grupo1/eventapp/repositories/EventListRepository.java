@@ -12,11 +12,12 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface EventListRepository extends MongoRepository<EventList, String> {
+
     Page<EventList> findAll(Pageable pageable);
 
     Page<EventList> findAllByUser(User user, Pageable pageable);
 
     long countAllByUserId(String user_id);
 
-    List<EventList> findAllByEventId(EventId eventId);
+    List<EventList> findAllByEvents(EventId eventId);
 }

@@ -1,6 +1,6 @@
 package ar.com.tacsutn.grupo1.eventapp.services;
 
-import ar.com.tacsutn.grupo1.eventapp.BootstrapData;
+//import ar.com.tacsutn.grupo1.eventapp.BootstrapData;
 import ar.com.tacsutn.grupo1.eventapp.models.EventId;
 import ar.com.tacsutn.grupo1.eventapp.models.EventList;
 import ar.com.tacsutn.grupo1.eventapp.models.User;
@@ -27,8 +27,8 @@ import static org.junit.Assert.assertFalse;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class EventServiceTest {
-    @MockBean
-    private BootstrapData bootstrapData;
+//    @MockBean
+//    private BootstrapData bootstrapData;
 
     @Mock
     private User user1;

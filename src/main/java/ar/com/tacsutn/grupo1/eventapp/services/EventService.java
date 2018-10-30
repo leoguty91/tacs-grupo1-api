@@ -23,22 +23,22 @@ public class EventService {
         this.eventListService = eventListService;
     }
 
-    public Optional<EventId> getById(String id){
+    public Optional<EventId> getById(String id) {
         return eventRepository.findById(id);
     }
 
-    public EventId save(EventId eventId){
+    public EventId save(EventId eventId) {
         return eventRepository.save(eventId);
     }
 
     @Transactional
-    public void removeEvent(EventList eventList, EventId event){
+    public void removeEvent(EventList eventList, EventId event) {
         eventList.removeEvent(event);
     }
 
     @Transactional
-    public long getTotalUsersByEventId(String eventId){
-        Optional <EventId> event =  eventRepository.findById(eventId);
+    public long getTotalUsersByEventId(String eventId) {
+        Optional<EventId> event = eventRepository.findById(eventId);
         return event.map(ev -> eventListService.findListByEvent(ev).stream().map(eventList -> eventList.getUser().getId()).distinct().count()).orElse(0L);
     }
 

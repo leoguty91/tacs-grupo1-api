@@ -145,10 +145,10 @@ public class EventListService {
     }
 
     public List<EventList> findListByEvent(EventId eventId){
-        return eventListRepository.findAllByEventId(eventId);
+        return eventListRepository.findAllByEvents(eventId);
     }
 
-    public Page<EventId> getListEvents(EventList eventList, Pageable pageable) {
+    public Page<EventId> getListEvents(Optional<EventList> eventList, Pageable pageable) {
         //todo ver que devuelvo
       //  return Utils.listToPage(new ArrayList<>(eventList.getEvents()), pageable);
         return null;

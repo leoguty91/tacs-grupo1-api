@@ -56,10 +56,10 @@ public class AlarmServiceTest {
         alarmService.getById(user1, alarm2.getId()).orElseThrow(NoSuchElementException::new);
     }
 
-    @Test(expected = NoSuchElementException.class)
-    public void getExceptionWhenAlarmIsNotFound () {
-        userService.getById(1000).orElseThrow(NoSuchElementException::new);
-    }
+//    @Test(expected = NoSuchElementException.class)
+//    public void getExceptionWhenAlarmIsNotFound () {
+//        userService.getById(1000).orElseThrow(NoSuchElementException::new);
+//    }
 
     @Test
     public void canRemoveAlarm() {

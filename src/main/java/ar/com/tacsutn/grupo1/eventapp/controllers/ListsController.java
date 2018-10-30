@@ -20,6 +20,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -125,9 +126,8 @@ public class ListsController {
             HttpServletRequest request) {
 
         User user = sessionService.getAuthenticatedUser(request);
-        EventList eventList = eventListService.getById(user, list_id)
-                .orElseThrow(() -> new ResourceNotFoundException("List not found."));
-        Page<EventId> eventIdPage = eventListService.getListEvents(eventList, pageable);
+         Optional<EventList> eventList = eventListService.getById(user, list_id);
+         Page<EventId> eventIdPage = eventListService.getListEvents(eventList, pageable);
 
         List<Event> list = eventIdPage.getContent()
             .parallelStream()

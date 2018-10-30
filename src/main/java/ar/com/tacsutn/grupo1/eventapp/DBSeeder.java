@@ -5,16 +5,21 @@ import ar.com.tacsutn.grupo1.eventapp.models.AuthorityName;
 import ar.com.tacsutn.grupo1.eventapp.models.User;
 import ar.com.tacsutn.grupo1.eventapp.repositories.AuthorityRepository;
 import ar.com.tacsutn.grupo1.eventapp.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+@Component
 public class DBSeeder implements CommandLineRunner {
 
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private AuthorityRepository authorityRepository;
 
     public DBSeeder(UserRepository userRepository, AuthorityRepository authorityRepository) {
@@ -60,8 +65,11 @@ public class DBSeeder implements CommandLineRunner {
         authority2.setId("2");
         authority2.setName(AuthorityName.ROLE_ADMIN);
         User adminUser = new User("admin", "$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi", "admin", "admin", "admin@admin.com", true, new Date(2016, 1, 1), Arrays.asList(authority1, authority2));
+        adminUser.setId("1");
         User userUser = new User("user", "$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC", "user", "user", "enabled@user.com", true, new Date(2016, 1, 1), Arrays.asList(authority1));
+        userUser.setId("1");
         User disabledUser = new User("disabled", "$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC", "user", "user", "disabled@user.com", false, new Date(2016, 1, 1), Arrays.asList(authority1));
+        disabledUser.setId("1");
         this.userRepository.deleteAll();
         this.authorityRepository.deleteAll();
         List<Authority> authorities = Arrays.asList(authority1,authority2);

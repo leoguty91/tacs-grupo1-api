@@ -1,6 +1,6 @@
 package ar.com.tacsutn.grupo1.eventapp.controllers;
 
-import ar.com.tacsutn.grupo1.eventapp.BootstrapData;
+//import ar.com.tacsutn.grupo1.eventapp.BootstrapData;
 import ar.com.tacsutn.grupo1.eventapp.EventAppApplication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -27,8 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {EventAppApplication.class})
 public class AuthenticationControllerTest {
-  @Autowired
-  private BootstrapData bootstrapData;
+//  @Autowired
+//  private BootstrapData bootstrapData;
 
   @Autowired
   private WebApplicationContext webApplicationContext;

@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document
@@ -23,7 +24,7 @@ public class EventList {
     private User user;
 
     @DBRef
-    private List<EventId> events;
+    private List<EventId> events  = new ArrayList<>();
 
     public EventList() {
 
