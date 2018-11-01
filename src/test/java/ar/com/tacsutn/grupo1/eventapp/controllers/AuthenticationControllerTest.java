@@ -2,6 +2,8 @@ package ar.com.tacsutn.grupo1.eventapp.controllers;
 
 //import ar.com.tacsutn.grupo1.eventapp.BootstrapData;
 import ar.com.tacsutn.grupo1.eventapp.EventAppApplication;
+import ar.com.tacsutn.grupo1.eventapp.repositories.AuthorityRepository;
+import ar.com.tacsutn.grupo1.eventapp.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +16,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
@@ -29,6 +30,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthenticationControllerTest {
 //  @Autowired
 //  private BootstrapData bootstrapData;
+  @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
+  private AuthorityRepository authorityRepository;
 
   @Autowired
   private WebApplicationContext webApplicationContext;
@@ -47,10 +53,16 @@ public class AuthenticationControllerTest {
             .build();
   }
 
-  @Transactional
   @DirtiesContext
   @Test
   public void canLogin() throws Exception {
+    // TODO Fix this test
+//    Authority authority1 = new Authority();
+//    authority1.setId("1");
+//    authority1.setName(AuthorityName.ROLE_USER);
+//    User userUser = new User("user", "$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC", "user", "user", "enabled@user.com", true, new Date(2016, 1, 1), Arrays.asList(authority1));
+//    authorityRepository.save(authority1);
+//    userRepository.save(userUser);
     mockMvc.perform(
             post("/api/v1/login")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -58,7 +70,6 @@ public class AuthenticationControllerTest {
             .andExpect(status().isOk());
   }
 
-  @Transactional
   @DirtiesContext
   @Test
   public void shouldNotLoginWithWrongUser() throws Exception {
@@ -69,7 +80,6 @@ public class AuthenticationControllerTest {
             .andExpect(status().isUnauthorized());
   }
 
-  @Transactional
   @DirtiesContext
   @Test
   public void shouldNotLoginWithWrongPassword() throws Exception {
@@ -80,7 +90,6 @@ public class AuthenticationControllerTest {
             .andExpect(status().isUnauthorized());
   }
 
-  @Transactional
   @DirtiesContext
   @Test
   public void canRefresh() throws Exception {
@@ -95,7 +104,6 @@ public class AuthenticationControllerTest {
             .andExpect(status().isOk());
   }
 
-  @Transactional
   @DirtiesContext
   @Test
   public void shouldNotRefreshWhenNotLogged() throws Exception {

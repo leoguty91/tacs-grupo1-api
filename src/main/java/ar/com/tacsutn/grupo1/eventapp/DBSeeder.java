@@ -66,13 +66,10 @@ public class DBSeeder implements CommandLineRunner {
         authority2.setName(AuthorityName.ROLE_ADMIN);
         User adminUser = new User("admin", "$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi", "admin", "admin", "admin@admin.com", true, new Date(2016, 1, 1), Arrays.asList(authority1, authority2));
         adminUser.setId("1");
-        adminUser.setTelegramUserId(100);
         User userUser = new User("user", "$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC", "user", "user", "enabled@user.com", true, new Date(2016, 1, 1), Arrays.asList(authority1));
         userUser.setId("2");
-        userUser.setTelegramUserId(101);
         User disabledUser = new User("disabled", "$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC", "user", "user", "disabled@user.com", false, new Date(2016, 1, 1), Arrays.asList(authority1));
         disabledUser.setId("3");
-        disabledUser.setTelegramUserId(102);
         this.userRepository.deleteAll();
         this.authorityRepository.deleteAll();
         List<Authority> authorities = Arrays.asList(authority1,authority2);

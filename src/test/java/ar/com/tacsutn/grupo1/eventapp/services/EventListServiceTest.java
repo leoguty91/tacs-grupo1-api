@@ -64,7 +64,6 @@ public class EventListServiceTest {
         setLists();
     }
 
-    @Transactional
     @Test
     public void canGetEventsList() {
         EventList result = listService.getById(eventList1.getId()).orElseThrow(NoSuchElementException::new);
@@ -72,13 +71,11 @@ public class EventListServiceTest {
         assertEquals(eventList1.getId(), result.getId());
     }
 
-//    @Transactional
 //    @Test
 //    public void shouldNotGetEventsListIfNotExists() {
 //        assertFalse(listService.getById(-500L).isPresent());
 //    }
 
-    @Transactional
     @Test
     public void canGetAllEventLists() {
         listService.getLists().getContent().iterator().forEachRemaining(e -> System.out.println(e.getName()));
@@ -86,13 +83,11 @@ public class EventListServiceTest {
         assertArrayEquals(new EventList[]{eventList1, eventList3}, listService.getLists().getContent().toArray());
     }
 
-    @Transactional
     @Test
     public void canGetAllEventListsForAUser() {
         assertArrayEquals(new EventList[]{eventList1}, listService.getListsByUser(user1).getContent().toArray());
     }
 
-    @Transactional
     @Test
     public void canAddEventList() {
         listService.save(eventList2);
@@ -100,7 +95,6 @@ public class EventListServiceTest {
         assertEquals(2L, eventsCount(user1));
     }
 
-    @Transactional
     @Test
     public void shouldNotAddEventListIfExists() {
         listService.save(eventList1);
@@ -108,7 +102,6 @@ public class EventListServiceTest {
         assertEquals(1L, eventsCount(user1));
     }
 
-    @Transactional
     @Test
     public void canDeleteEventList() {
         listService.delete(user1, eventList1.getId());
@@ -116,19 +109,16 @@ public class EventListServiceTest {
         assertEquals(0L, eventsCount(user1));
     }
 //
-//    @Transactional
 //    @Test(expected = NoSuchElementException.class)
 //    public void shouldNotDeleteListIfNotExists() {
 //        listService.delete(user1, -2000L);
 //    }
 
-    @Transactional
     @Test(expected = NoSuchElementException.class)
     public void shouldNotDeleteListIfNotOwner() {
         listService.delete(user1, eventList3.getId());
     }
 
-    @Transactional
     @Test
     public void canChangeEventListName() {
         listService.rename(user1, eventList1.getId(), "TestRename");
@@ -138,19 +128,16 @@ public class EventListServiceTest {
         assertEquals("TestRename", renamedList.getName());
     }
 
-//    @Transactional
 //    @Test(expected = NoSuchElementException.class)
 //    public void shouldNotChangeListNameIfNotExists() {
 //        listService.rename(user1, -2000L, "TestRename");
 //    }
 
-    @Transactional
     @Test(expected = NoSuchElementException.class)
     public void shouldNotChangeListNameIfNotOwner() {
         listService.rename(user1, eventList3.getId(), "TestRename");
     }
 
-    @Transactional
     @Test
     public void canGetCommonEventsFromTwoDifferentEventList() throws IOException {
         mockEvent();
@@ -160,7 +147,6 @@ public class EventListServiceTest {
         assertEquals(event1.getId(), commonEvents.get(0).getId());
     }
 
-    @Transactional
     @Test
     public void gettingCommonEventsIsAssociative() throws IOException {
         mockEvent();
@@ -170,7 +156,6 @@ public class EventListServiceTest {
         assertEquals(event1.getId(), commonEvents.get(0).getId());
     }
 
-    @Transactional
     @Test
     public void canGetCommonEventsEqualToAllIfSameEventList() throws IOException {
         mockEvent();
@@ -180,7 +165,6 @@ public class EventListServiceTest {
         assertEquals(eventList1.getEvents().size(), commonEvents.size());
     }
 
-    @Transactional
     @Test
     public void shouldNotFindCommonEventsIfThereAreNoCommonEvents() {
         listService.save(eventList2);
@@ -190,25 +174,21 @@ public class EventListServiceTest {
         assertTrue(commonEvents.isEmpty());
     }
 
-//    @Transactional
 //    @Test(expected = NoSuchElementException.class)
 //    public void shouldNotFindCommonEventsIfFirstIdDoesNotExist() {
 //        getCommonEvents(-2000L, eventList1.getId());
 //    }
 //
-//    @Transactional
 //    @Test(expected = NoSuchElementException.class)
 //    public void shouldNotFindCommonEventsIfSecondIdDoesNotExist() {
 //        getCommonEvents(eventList1.getId(), -4000L);
 //    }
 //
-//    @Transactional
 //    @Test(expected = NoSuchElementException.class)
 //    public void shouldNotFindCommonEventsIfNeitherIdsDoesNotExist() {
 //        getCommonEvents(-2000L, -4000L);
 //    }
 //
-//    @Transactional
 //    @Test
 //    public void canFindUserCountInterestedInEvent() {
 //        int interestedCount = eventService.getTotalUsersByEventId("0");
@@ -216,7 +196,6 @@ public class EventListServiceTest {
 //        assertEquals(2, interestedCount);
 //    }
 //
-//    @Transactional
 //    @Test
 //    public void shouldBe0IfNoUsersAreInterestedInEvent() {
 //        int interestedCount = eventService.getTotalUsersByEventId("foo");

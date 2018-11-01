@@ -65,7 +65,6 @@ public class User {
     @DBRef
     private List<Alarm> alarms;
 
-    @Indexed(unique = true)
     private Integer telegramUserId;
 
     public User() {

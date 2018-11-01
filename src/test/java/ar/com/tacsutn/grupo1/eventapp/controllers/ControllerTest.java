@@ -7,9 +7,9 @@ import ar.com.tacsutn.grupo1.eventapp.models.Alarm;
 import ar.com.tacsutn.grupo1.eventapp.models.EventId;
 import ar.com.tacsutn.grupo1.eventapp.models.EventList;
 import ar.com.tacsutn.grupo1.eventapp.models.User;
+import ar.com.tacsutn.grupo1.eventapp.repositories.*;
 import ar.com.tacsutn.grupo1.eventapp.services.*;
 import ar.com.tacsutn.grupo1.eventapp.models.*;
-import ar.com.tacsutn.grupo1.eventapp.repositories.AuthorityRepository;
 import ar.com.tacsutn.grupo1.eventapp.services.EventListService;
 import ar.com.tacsutn.grupo1.eventapp.services.EventService;
 import ar.com.tacsutn.grupo1.eventapp.services.SessionService;
@@ -45,9 +45,20 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 public abstract class ControllerTest {
 //    @MockBean
 //    private BootstrapData bootstrapData;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private AuthorityRepository authorityRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
+    private EventListRepository eventListRepository;
+
+    @Autowired
+    private AlarmRepository alarmRepository;
 
     List<Authority> userAuthorities, adminAuthorities;
 
@@ -96,7 +107,9 @@ public abstract class ControllerTest {
 
     private void setUsers() {
         user1 = new User("JohnDoemann1", "1234", "John", "Doemann", "john.doemann@test.com", true, new Date(), userAuthorities);
+        user1.setId("1");
         user2 = new User("JanetDoemann2", "1234", "Janet", "Doemann", "janet.doemann@test.com", true, new Date(), adminAuthorities);
+        user2.setId("2");
 
         userService.save(user1);
         userService.save(user2);
@@ -120,8 +133,11 @@ public abstract class ControllerTest {
                 .setAddress("Plymouth College of Art, Tavistock Place");
 
         alarm1 = new Alarm(user1,"alarm1",filter1);
+        alarm1.setId("1");
         alarm2 = new Alarm(user2,"alarm2",filter2);
+        alarm2.setId("2");
         alarm3 = new Alarm(user1,"alarm3",filter3);
+        alarm3.setId("3");
 
         alarmService.save(alarm1);
         alarmService.save(alarm2);
@@ -138,8 +154,11 @@ public abstract class ControllerTest {
 
     private void setLists() {
         EventList eventList1 = new EventList("List1", user1);
+        eventList1.setId("1");
         EventList eventList2 = new EventList("List2", user1);
+        eventList2.setId("2");
         EventList eventList3 = new EventList("List3", user2);
+        eventList3.setId("3");
 
         List<EventId> list1 = new ArrayList<>(), list2 = new ArrayList<>(), list3 = new ArrayList<>();
 
@@ -155,12 +174,20 @@ public abstract class ControllerTest {
         listService.save(eventList3);
     }
 
+    private void cleanDB(){
+        userRepository.deleteAll();
+        authorityRepository.deleteAll();
+        eventListRepository.deleteAll();
+        alarmRepository.deleteAll();
+    }
+
     protected MockMvc getMockMvc() {
         return mockMvc;
     }
 
     @Before
     public void before() {
+        cleanDB();
         setAuthorities();
         setUsers();
         setEvents();
@@ -176,7 +203,6 @@ public abstract class ControllerTest {
                 .build();
     }
 
-    @Transactional
     @Test
     public void incorrectURIReturnsErrorStatus() throws Exception {
         mockMvc.perform(get("/fail")).andExpect(status().is4xxClientError());

@@ -10,9 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +44,6 @@ public class EventServiceTest {
         setEventList();
     }
 
-    @Transactional
     @Test
     public void canGetById() {
         EventId actualEvent = eventService.getById(event1.getId()).orElseThrow(NoSuchElementException::new);
@@ -54,13 +51,11 @@ public class EventServiceTest {
         assertEquals(event1, actualEvent);
     }
 
-    @Transactional
     @Test
     public void shouldNotGetEventIfNotExists() {
         assertFalse(eventService.getById(event2.getId()).isPresent());
     }
 
-    @Transactional
     @Test
     public void canDeleteEventFromList() {
         eventService.removeEvent(eventList, event1);
@@ -68,7 +63,6 @@ public class EventServiceTest {
         assertArrayEquals(new EventId[]{}, eventList.getEvents().toArray());
     }
 
-    @Transactional
     @Test
     public void shouldNotDeleteEventIfNotExists() {
         eventService.removeEvent(eventList, event2);
@@ -76,7 +70,6 @@ public class EventServiceTest {
         assertEquals(1, eventList.getEvents().size());
     }
 
-    @Transactional
     @Test
     public void canFindAllEventsBetweenDates() {
         addAllEvents();
@@ -89,7 +82,6 @@ public class EventServiceTest {
         assertEquals(3, eventsCount);
     }
 
-    @Transactional
     @Test
     public void shouldNotFindEventsIfNotInRange() {
         addAllEvents();
