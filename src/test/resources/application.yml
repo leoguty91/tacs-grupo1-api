@@ -1,6 +1,13 @@
 spring:
   autoconfigure:
     exclude: org.telegram.telegrambots.starter.TelegramBotStarterConfiguration
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: eventDB_Test
+      repositories:
+        enabled: true
 logging:
   level:
     root: OFF

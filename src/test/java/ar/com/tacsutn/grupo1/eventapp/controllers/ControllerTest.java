@@ -14,6 +14,7 @@ import ar.com.tacsutn.grupo1.eventapp.services.EventService;
 import ar.com.tacsutn.grupo1.eventapp.services.SessionService;
 import ar.com.tacsutn.grupo1.eventapp.services.UserService;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -186,8 +187,6 @@ public abstract class ControllerTest {
 
     @Before
     public void before() {
-
-        cleanDB();
         setAuthorities();
         setUsers();
         setEvents();
@@ -201,6 +200,11 @@ public abstract class ControllerTest {
                 .addFilters(springSecurityFilterChain)
                 .apply(springSecurity())
                 .build();
+    }
+
+    @After
+    public void after() {
+        cleanDB();
     }
 
     @Test

@@ -2,14 +2,12 @@ package ar.com.tacsutn.grupo1.eventapp.controllers;
 
 import org.junit.Test;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.DirtiesContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class EventsControllerTest extends ControllerTest {
   @WithMockUser(roles = "USER")
-  @DirtiesContext
   @Test
   public void canGetEventsWithAddress() throws Exception {
     this.getMockMvc()
@@ -18,7 +16,6 @@ public class EventsControllerTest extends ControllerTest {
   }
 
   @WithMockUser(roles = "USER")
-  @DirtiesContext
   @Test
   public void canGetEventsWithFrom() throws Exception {
     this.getMockMvc()
@@ -27,7 +24,6 @@ public class EventsControllerTest extends ControllerTest {
   }
 
   @WithMockUser(roles = "USER")
-  @DirtiesContext
   @Test
   public void canGetEventsWithPrice() throws Exception {
     this.getMockMvc()
@@ -36,7 +32,6 @@ public class EventsControllerTest extends ControllerTest {
   }
 
   @WithMockUser(roles = "USER")
-  @DirtiesContext
   @Test
   public void canGetEventsWithQ() throws Exception {
     this.getMockMvc()
@@ -45,7 +40,6 @@ public class EventsControllerTest extends ControllerTest {
   }
 
   @WithMockUser(roles = "USER")
-  @DirtiesContext
   @Test
   public void canGetEventsWithTo() throws Exception {
     this.getMockMvc()
@@ -54,7 +48,6 @@ public class EventsControllerTest extends ControllerTest {
   }
 
   @WithMockUser(roles = "USER")
-  @DirtiesContext
   @Test
   public void canGetEventsWithUnknownFilterFromAPI() throws Exception {
     this.getMockMvc()
@@ -63,7 +56,6 @@ public class EventsControllerTest extends ControllerTest {
   }
 
   @WithMockUser(roles = "USER")
-  @DirtiesContext
   @Test
   public void canGetEventsWithNonExistentFilter() throws Exception {
     this.getMockMvc()
@@ -72,7 +64,6 @@ public class EventsControllerTest extends ControllerTest {
   }
 
   @WithMockUser(roles = "ADMIN")
-  @DirtiesContext
   @Test
   public void canGetTotalUsers() throws Exception {
     this.getMockMvc()
@@ -81,7 +72,6 @@ public class EventsControllerTest extends ControllerTest {
   }
 
   @WithMockUser(roles = "USER")
-  @DirtiesContext
   @Test
   public void shouldNotGetTotalUsersIfNotAdmin() throws Exception {
     this.getMockMvc()
@@ -90,7 +80,6 @@ public class EventsControllerTest extends ControllerTest {
   }
 
   @WithMockUser(roles = "ADMIN")
-  @DirtiesContext
   @Test
   public void shouldNotGetTotalUsersIfEventDoesNotExist() throws Exception {
     this.getMockMvc()
@@ -99,7 +88,6 @@ public class EventsControllerTest extends ControllerTest {
   }
 
   @WithMockUser(roles = "ADMIN")
-  @DirtiesContext
   @Test
   public void canGetTotalEventsFromADateRange() throws Exception {
     this.getMockMvc()
@@ -108,7 +96,6 @@ public class EventsControllerTest extends ControllerTest {
   }
 
   @WithMockUser(roles = "ADMIN")
-  @DirtiesContext
   @Test
   public void canGetTotalEventsFromBeginningOfTimes() throws Exception {
     this.getMockMvc()
@@ -117,7 +104,6 @@ public class EventsControllerTest extends ControllerTest {
   }
 
   @WithMockUser(roles = "USER")
-  @DirtiesContext
   @Test
   public void shouldNotGetTotalEventsIfNotAdmin() throws Exception {
     this.getMockMvc()

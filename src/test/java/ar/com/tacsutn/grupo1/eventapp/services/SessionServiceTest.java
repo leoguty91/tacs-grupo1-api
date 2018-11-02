@@ -65,7 +65,7 @@ public class SessionServiceTest {
   }
 
   private void setUsers() {
-    user1 = new User("JohnDoemann1", "1234", "John", "Doemann", "john.doemann@test.com", true, new Date(), userAuthorities);
+    user1 = new User("JohnDoe", "1234", "John", "Doemann", "john.doemann@test.com", true, new Date(), userAuthorities);
     user2 = new User("JanetDoemann2", "1234", "Janet", "Doemann", "janet.doemann@test.com", true, new Date(), adminAuthorities);
 
     userService.save(user1);
