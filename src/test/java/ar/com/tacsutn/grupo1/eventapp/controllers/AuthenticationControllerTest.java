@@ -1,6 +1,5 @@
 package ar.com.tacsutn.grupo1.eventapp.controllers;
 
-//import ar.com.tacsutn.grupo1.eventapp.BootstrapData;
 import ar.com.tacsutn.grupo1.eventapp.EventAppApplication;
 import ar.com.tacsutn.grupo1.eventapp.repositories.AuthorityRepository;
 import ar.com.tacsutn.grupo1.eventapp.repositories.UserRepository;
@@ -27,9 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {EventAppApplication.class})
-public class AuthenticationControllerTest {
-//  @Autowired
-//  private BootstrapData bootstrapData;
+public class AuthenticationControllerTest extends ControllerTest {
   @Autowired
   private UserRepository userRepository;
 
@@ -46,6 +43,7 @@ public class AuthenticationControllerTest {
 
   @Before
   public void before() {
+    super.before();
     mockMvc = MockMvcBuilders
             .webAppContextSetup(webApplicationContext)
             .addFilters(springSecurityFilterChain)
@@ -56,13 +54,6 @@ public class AuthenticationControllerTest {
   @DirtiesContext
   @Test
   public void canLogin() throws Exception {
-    // TODO Fix this test
-//    Authority authority1 = new Authority();
-//    authority1.setId("1");
-//    authority1.setName(AuthorityName.ROLE_USER);
-//    User userUser = new User("user", "$2a$08$UkVvwpULis18S19S5pZFn.YHPZt3oaqHZnDwqbCW9pft6uFtkXKDC", "user", "user", "enabled@user.com", true, new Date(2016, 1, 1), Arrays.asList(authority1));
-//    authorityRepository.save(authority1);
-//    userRepository.save(userUser);
     mockMvc.perform(
             post("/api/v1/login")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)

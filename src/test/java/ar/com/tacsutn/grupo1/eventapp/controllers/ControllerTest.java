@@ -1,6 +1,5 @@
 package ar.com.tacsutn.grupo1.eventapp.controllers;
 
-//import ar.com.tacsutn.grupo1.eventapp.BootstrapData;
 import ar.com.tacsutn.grupo1.eventapp.EventAppApplication;
 import ar.com.tacsutn.grupo1.eventapp.client.EventFilter;
 import ar.com.tacsutn.grupo1.eventapp.models.Alarm;
@@ -24,16 +23,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -43,14 +38,11 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { EventAppApplication.class })
 public abstract class ControllerTest {
-//    @MockBean
-//    private BootstrapData bootstrapData;
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private AuthorityRepository authorityRepository;
-    ;
 
     @Autowired
     private EventRepository eventRepository;
@@ -69,7 +61,7 @@ public abstract class ControllerTest {
     @Autowired
     private UserService userService;
 
-    private User user1, user2;
+    private User user1, user2, user3;
 
     @Autowired
     private EventService eventService;
@@ -115,10 +107,10 @@ public abstract class ControllerTest {
         user1.setId("1");
         user2 = new User("JanetDoemann2", "1234", "Janet", "Doemann", "janet.doemann@test.com", true, new Date(), adminAuthorities);
         user2.setId("2");
-        user1.setTelegramUserId(100);
-        user2.setTelegramUserId(101);
+        user3 = new User("user", "$2a$10$VRCMZ7QmxLs9B/WunP2WtuyuayZl3IzFOnqFD/Zir7hl5o0aFHVni", "user", "user", "enabled@user.com", true, new Date(), userAuthorities);
         userService.save(user1);
         userService.save(user2);
+        userService.save(user3);
     }
 
     private void setAlarms() {
@@ -184,6 +176,7 @@ public abstract class ControllerTest {
         userRepository.deleteAll();
         authorityRepository.deleteAll();
         eventListRepository.deleteAll();
+        eventRepository.deleteAll();
         alarmRepository.deleteAll();
     }
 

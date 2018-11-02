@@ -4,7 +4,7 @@ spring:
       INDENT_OUTPUT: true
   data:
     mongodb:
-      host: ds237563.mlab.com:37563/heroku_3p5zrpmq
+      host: localhost
       port: 27017
       database: eventDB
       repositories:
