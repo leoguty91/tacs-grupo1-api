@@ -109,6 +109,7 @@ public abstract class ControllerTest {
         user2 = new User("JanetDoemann2", "1234", "Janet", "Doemann", "janet.doemann@test.com", true, new Date(), adminAuthorities);
         user2.setId("2");
         user3 = new User("user", "$2a$10$VRCMZ7QmxLs9B/WunP2WtuyuayZl3IzFOnqFD/Zir7hl5o0aFHVni", "user", "user", "enabled@user.com", true, new Date(), userAuthorities);
+
         userService.save(user1);
         userService.save(user2);
         userService.save(user3);
@@ -187,6 +188,11 @@ public abstract class ControllerTest {
 
     @Before
     public void before() {
+        authorityRepository.deleteAll();
+        userRepository.deleteAll();
+        eventRepository.deleteAll();
+        listRepository.deleteAll();
+        alarmRepository.deleteAll();
         setAuthorities();
         setUsers();
         setEvents();
