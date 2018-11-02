@@ -50,15 +50,19 @@ public abstract class ControllerTest {
 
     @Autowired
     private AuthorityRepository authorityRepository;
+    ;
 
     @Autowired
     private EventRepository eventRepository;
 
     @Autowired
-    private EventListRepository eventListRepository;
+    private EventListRepository listRepository;
 
     @Autowired
     private AlarmRepository alarmRepository;
+
+    @Autowired
+    private EventListRepository eventListRepository;
 
     List<Authority> userAuthorities, adminAuthorities;
 
@@ -94,6 +98,7 @@ public abstract class ControllerTest {
     private void setAuthorities() {
         Authority userAuthority = new Authority();
         userAuthority.setName(AuthorityName.ROLE_USER);
+
         authorityRepository.save(userAuthority);
 
         userAuthorities = Collections.singletonList(userAuthority);
@@ -110,7 +115,8 @@ public abstract class ControllerTest {
         user1.setId("1");
         user2 = new User("JanetDoemann2", "1234", "Janet", "Doemann", "janet.doemann@test.com", true, new Date(), adminAuthorities);
         user2.setId("2");
-
+        user1.setTelegramUserId(100);
+        user2.setTelegramUserId(101);
         userService.save(user1);
         userService.save(user2);
     }
@@ -187,6 +193,7 @@ public abstract class ControllerTest {
 
     @Before
     public void before() {
+
         cleanDB();
         setAuthorities();
         setUsers();

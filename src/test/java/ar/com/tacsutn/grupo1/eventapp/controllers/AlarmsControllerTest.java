@@ -113,6 +113,8 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
+
+    //@Transactional
     @DirtiesContext
     @Test
     public void shouldNotFetchAlarmEventsIfPageDoesNotExist() throws Exception {
