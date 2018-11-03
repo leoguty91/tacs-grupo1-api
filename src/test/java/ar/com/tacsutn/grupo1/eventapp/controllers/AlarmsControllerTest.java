@@ -102,11 +102,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-<<<<<<< HEAD
-=======
-    //@Transactional
-    @DirtiesContext
->>>>>>> cambios en controller para tests
     @Test
     public void shouldNotFetchAlarmEventsIfPageDoesNotExist() throws Exception {
         this.getMockMvc()
