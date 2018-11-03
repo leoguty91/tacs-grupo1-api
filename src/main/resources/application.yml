@@ -4,11 +4,7 @@ spring:
       INDENT_OUTPUT: true
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: eventDB
-      repositories:
-        enabled: true
+      uri: mongodb://localhost/eventDB
 #  h2:
 #    console:
 #      enabled: true
