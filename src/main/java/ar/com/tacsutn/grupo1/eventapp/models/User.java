@@ -23,6 +23,7 @@ public class User {
     @Id
     private String id;
 
+
     @Size(min = 4, max = 50)
     private String username;
 

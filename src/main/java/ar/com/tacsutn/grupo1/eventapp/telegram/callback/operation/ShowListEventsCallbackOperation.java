@@ -44,7 +44,7 @@ public class ShowListEventsCallbackOperation extends AuthenticatedCallbackOperat
     @Override
     public void handle(TelegramBot bot, CallbackQuery callbackQuery, CallbackData callbackData) {
         getUserOrAlert(bot, callbackQuery)
-                .map(user -> eventListService.getById(user, callbackData.getListId()))
+                .flatMap(user -> eventListService.getById(user, callbackData.getListId()))
                 .map(list -> eventListService.getListEvents(list, PageRequest.of(0, 5)))
                 .map(eventIds -> getShowListEventsMessageRequest(callbackQuery, eventIds))
                 .ifPresent(request -> makeRequest(bot, request));

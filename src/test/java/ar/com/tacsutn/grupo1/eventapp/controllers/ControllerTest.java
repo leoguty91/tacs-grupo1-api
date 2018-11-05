@@ -171,6 +171,7 @@ public abstract class ControllerTest {
         eventList3.setEvents(list3);
 
         listService.save(eventList1);
+        listService.save(eventList2);
         listService.save(eventList3);
     }
 
@@ -180,6 +181,7 @@ public abstract class ControllerTest {
         eventListRepository.deleteAll();
         eventRepository.deleteAll();
         alarmRepository.deleteAll();
+
     }
 
     protected MockMvc getMockMvc() {

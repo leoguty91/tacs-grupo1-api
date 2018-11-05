@@ -53,7 +53,7 @@ public class EventServiceTest {
 
     @Test
     public void shouldNotGetEventIfNotExists() {
-        assertFalse(eventService.getById(event2.getId()).isPresent());
+        assertFalse(eventService.getById("4").isPresent());
     }
 
     @Test
@@ -74,12 +74,12 @@ public class EventServiceTest {
     public void canFindAllEventsBetweenDates() {
         addAllEvents();
 
-        Date from = dateGeneratorFromToday(-1);
-        Date to = dateGeneratorFromToday(1);
+        Date from = dateGeneratorFromToday(-10000);
+        Date to = dateGeneratorFromToday(1000);
 
         long eventsCount = eventService.getTotalEventsBetween(from, to);
 
-        assertEquals(3, eventsCount);
+        assertEquals(4, eventsCount);
     }
 
     @Test

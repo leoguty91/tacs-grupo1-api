@@ -106,13 +106,10 @@ public class EventListService {
     public Page<Event> getCommonEvents(String id1, String id2, Pageable pageable) {
         EventList list1 = getById(id1)
                 .orElseThrow(NoSuchElementException::new);
-
         EventList list2 = getById(id2)
                 .orElseThrow(NoSuchElementException::new);
-
         List<EventId> eventIds = list1.getEvents();
         eventIds.retainAll(list2.getEvents());
-
         List<Event> events = eventIds
             .parallelStream()
             .flatMap(event -> eventbriteClient.getEvent(event.getId())
@@ -148,10 +145,9 @@ public class EventListService {
         return eventListRepository.findAllByEvents(eventId);
     }
 
-    public Page<EventId> getListEvents(Optional<EventList> eventList, Pageable pageable) {
+    public Page<EventId> getListEvents(EventList eventList, Pageable pageable) {
         //todo ver que devuelvo
-      //  return Utils.listToPage(new ArrayList<>(eventList.getEvents()), pageable);
-        return null;
+        return listToPage(new ArrayList<EventId>(eventList.getEvents()), pageable);
     }
 
     }

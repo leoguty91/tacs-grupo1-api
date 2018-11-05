@@ -202,7 +202,7 @@ public class ListsControllerTest extends ControllerTest {
   @Test
   public void canCompareListsIsAssociative() throws Exception {
     this.getMockMvc()
-            .perform(get("/api/v1/lists/compare?list2=2&list1=1"))
+            .perform(get("/api/v1/lists/compare?list2=3&list1=1"))
             .andExpect(status().isOk());
   }
 

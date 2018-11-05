@@ -26,6 +26,7 @@ public class EventId {
 
     public EventId(String id) {
         this.id = id;
+        this.createdTime = new Date();
     }
 
     public String getId() {
@@ -42,6 +43,15 @@ public class EventId {
 
     public void setEventLists(List<EventList> eventLists) {
         this.eventLists = eventLists;
+    }
+
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     @Override
