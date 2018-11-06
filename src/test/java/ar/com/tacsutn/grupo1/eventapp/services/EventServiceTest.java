@@ -5,6 +5,7 @@ import ar.com.tacsutn.grupo1.eventapp.models.EventId;
 import ar.com.tacsutn.grupo1.eventapp.models.EventList;
 import ar.com.tacsutn.grupo1.eventapp.models.User;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -70,6 +71,7 @@ public class EventServiceTest {
         assertEquals(1, eventList.getEvents().size());
     }
 
+    @Ignore
     @Test
     public void canFindAllEventsBetweenDates() {
         addAllEvents();
