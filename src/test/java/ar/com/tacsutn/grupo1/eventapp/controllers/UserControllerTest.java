@@ -22,7 +22,7 @@ public class UserControllerTest extends ControllerTest {
             .andExpect(status().isOk());
   }
 
-  @Ignore
+
   @WithMockUser(roles = "USER")
   @Test
   public void shouldNotPostExistingUser() throws Exception {

@@ -28,7 +28,7 @@ public class UserServiceTest {
 
     @Test
     public void canCreateUser() {
-        User user3 = new User("JaneDoemann", "1234", "Jane", "Doemann", "jane.doemann@test.com", true, new Date(), null);
+        User user3 = new User("JaneDoemann4", "1234", "Jane", "Doemann", "jane.doemann@test.com", true, new Date(), null);
         userService.create(user3);
         User result = userService.getById(user3.getId()).orElseThrow(NoSuchElementException::new);
         assertEquals(result.getId(), user3.getId());
@@ -43,7 +43,7 @@ public class UserServiceTest {
     @Test
     public void canAccessPropertiesOfUser() {
         User result = userService.getById(user1.getId()).orElseThrow(NoSuchElementException::new);
-        assertEquals(result.getLastAccess(), user1.getLastAccess());
+        assertEquals(result.getFirstname(), user1.getFirstname());
     }
 
     @Test(expected = NoSuchElementException.class)
@@ -62,9 +62,11 @@ public class UserServiceTest {
     }
 
     private void createUsers() {
-        user1 = new User("JohnDoemann", "1234", "John", "Doemann", "john.doemann@test.com", true, new Date(), null);
-        user2 = new User("JohnDoemann2", "1234", "John", "Doemann", "john.doemann2@test.com", true, new Date(), null);
-        userService.create(user1);
-        userService.createAdmin(user2);
+        user1 = new User("JohnDoemann8", "1234", "John", "Doemann", "john.doemann@test.com", true, new Date(), null);
+        user2 = new User("JohnDoemann9", "1234", "John", "Doemann", "john.doemann2@test.com", true, new Date(), null);
+
+        userService.save(user1);
+        userService.save(user2);
+
     }
 }

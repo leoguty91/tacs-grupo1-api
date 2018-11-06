@@ -19,4 +19,5 @@ public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> getUserByTelegramUserId(Integer telegramUserId);
 
     Page<User> findAll(Pageable pageable);
+
 }
