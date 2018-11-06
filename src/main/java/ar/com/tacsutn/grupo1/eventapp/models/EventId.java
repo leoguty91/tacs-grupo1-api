@@ -2,27 +2,22 @@ package ar.com.tacsutn.grupo1.eventapp.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "Event")
-@EntityListeners(AuditingEntityListener.class)
+@Document
 public class EventId {
 
     @Id
-    @Column(unique = true)
     private String id;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "events", fetch = FetchType.LAZY)
     private List<EventList> eventLists;
 
     @CreatedDate
-    @Column
     private Date createdTime;
 
     public EventId() {
@@ -31,6 +26,7 @@ public class EventId {
 
     public EventId(String id) {
         this.id = id;
+        this.createdTime = new Date();
     }
 
     public String getId() {
@@ -47,6 +43,15 @@ public class EventId {
 
     public void setEventLists(List<EventList> eventLists) {
         this.eventLists = eventLists;
+    }
+
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
     }
 
     @Override

@@ -1,20 +1,20 @@
 package ar.com.tacsutn.grupo1.eventapp.controllers;
 
-import ar.com.tacsutn.grupo1.eventapp.BootstrapData;
 import ar.com.tacsutn.grupo1.eventapp.EventAppApplication;
 import ar.com.tacsutn.grupo1.eventapp.client.EventFilter;
 import ar.com.tacsutn.grupo1.eventapp.models.Alarm;
 import ar.com.tacsutn.grupo1.eventapp.models.EventId;
 import ar.com.tacsutn.grupo1.eventapp.models.EventList;
 import ar.com.tacsutn.grupo1.eventapp.models.User;
+import ar.com.tacsutn.grupo1.eventapp.repositories.*;
 import ar.com.tacsutn.grupo1.eventapp.services.*;
 import ar.com.tacsutn.grupo1.eventapp.models.*;
-import ar.com.tacsutn.grupo1.eventapp.repositories.AuthorityRepository;
 import ar.com.tacsutn.grupo1.eventapp.services.EventListService;
 import ar.com.tacsutn.grupo1.eventapp.services.EventService;
 import ar.com.tacsutn.grupo1.eventapp.services.SessionService;
 import ar.com.tacsutn.grupo1.eventapp.services.UserService;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,16 +24,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -43,18 +39,30 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { EventAppApplication.class })
 public abstract class ControllerTest {
-    @MockBean
-    private BootstrapData bootstrapData;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private AuthorityRepository authorityRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
+    private EventListRepository listRepository;
+
+    @Autowired
+    private AlarmRepository alarmRepository;
+
+    @Autowired
+    private EventListRepository eventListRepository;
 
     List<Authority> userAuthorities, adminAuthorities;
 
     @Autowired
     private UserService userService;
 
-    private User user1, user2;
+    private User user1, user2, user3;
 
     @Autowired
     private EventService eventService;
@@ -83,6 +91,7 @@ public abstract class ControllerTest {
     private void setAuthorities() {
         Authority userAuthority = new Authority();
         userAuthority.setName(AuthorityName.ROLE_USER);
+
         authorityRepository.save(userAuthority);
 
         userAuthorities = Collections.singletonList(userAuthority);
@@ -96,10 +105,14 @@ public abstract class ControllerTest {
 
     private void setUsers() {
         user1 = new User("JohnDoemann1", "1234", "John", "Doemann", "john.doemann@test.com", true, new Date(), userAuthorities);
+        user1.setId("1");
         user2 = new User("JanetDoemann2", "1234", "Janet", "Doemann", "janet.doemann@test.com", true, new Date(), adminAuthorities);
+        user2.setId("2");
+        user3 = new User("user", "$2a$10$VRCMZ7QmxLs9B/WunP2WtuyuayZl3IzFOnqFD/Zir7hl5o0aFHVni", "user", "user", "enabled@user.com", true, new Date(), userAuthorities);
 
         userService.save(user1);
         userService.save(user2);
+        userService.save(user3);
     }
 
     private void setAlarms() {
@@ -120,8 +133,11 @@ public abstract class ControllerTest {
                 .setAddress("Plymouth College of Art, Tavistock Place");
 
         alarm1 = new Alarm(user1,"alarm1",filter1);
+        alarm1.setId("1");
         alarm2 = new Alarm(user2,"alarm2",filter2);
+        alarm2.setId("2");
         alarm3 = new Alarm(user1,"alarm3",filter3);
+        alarm3.setId("3");
 
         alarmService.save(alarm1);
         alarmService.save(alarm2);
@@ -138,8 +154,11 @@ public abstract class ControllerTest {
 
     private void setLists() {
         EventList eventList1 = new EventList("List1", user1);
+        eventList1.setId("1");
         EventList eventList2 = new EventList("List2", user1);
+        eventList2.setId("2");
         EventList eventList3 = new EventList("List3", user2);
+        eventList3.setId("3");
 
         List<EventId> list1 = new ArrayList<>(), list2 = new ArrayList<>(), list3 = new ArrayList<>();
 
@@ -152,7 +171,17 @@ public abstract class ControllerTest {
         eventList3.setEvents(list3);
 
         listService.save(eventList1);
+        listService.save(eventList2);
         listService.save(eventList3);
+    }
+
+    private void cleanDB(){
+        userRepository.deleteAll();
+        authorityRepository.deleteAll();
+        eventListRepository.deleteAll();
+        eventRepository.deleteAll();
+        alarmRepository.deleteAll();
+
     }
 
     protected MockMvc getMockMvc() {
@@ -161,6 +190,11 @@ public abstract class ControllerTest {
 
     @Before
     public void before() {
+        authorityRepository.deleteAll();
+        userRepository.deleteAll();
+        eventRepository.deleteAll();
+        listRepository.deleteAll();
+        alarmRepository.deleteAll();
         setAuthorities();
         setUsers();
         setEvents();
@@ -176,7 +210,11 @@ public abstract class ControllerTest {
                 .build();
     }
 
-    @Transactional
+    @After
+    public void after() {
+        cleanDB();
+    }
+
     @Test
     public void incorrectURIReturnsErrorStatus() throws Exception {
         mockMvc.perform(get("/fail")).andExpect(status().is4xxClientError());

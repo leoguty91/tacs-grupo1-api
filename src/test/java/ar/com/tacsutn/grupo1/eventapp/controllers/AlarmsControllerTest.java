@@ -3,8 +3,6 @@ package ar.com.tacsutn.grupo1.eventapp.controllers;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,8 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class AlarmsControllerTest extends ControllerTest {
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void canPostAlarm() throws Exception {
         this.getMockMvc()
@@ -27,8 +23,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void canGetAlarm() throws Exception {
         this.getMockMvc()
@@ -40,8 +34,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void shouldNotGetAlarmIfNotExists() throws Exception {
         this.getMockMvc()
@@ -50,8 +42,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void canPutAlarm() throws Exception {
         this.getMockMvc()
@@ -62,8 +52,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void shouldNotPutAlarmIfNotExists() throws Exception {
         this.getMockMvc()
@@ -74,8 +62,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void canDeleteAlarm() throws Exception {
         this.getMockMvc()
@@ -84,8 +70,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void shouldNotDeleteAlarmIfNotExists() throws Exception {
         this.getMockMvc()
@@ -94,8 +78,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void canFetchAlarmPagedEvents() throws Exception {
         this.getMockMvc()
@@ -104,8 +86,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void canFetchAlarmEvents() throws Exception {
         this.getMockMvc()
@@ -114,8 +94,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void shouldNotFetchAlarmIfDoesNotExist() throws Exception {
         this.getMockMvc()
@@ -124,8 +102,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void shouldNotFetchAlarmEventsIfPageDoesNotExist() throws Exception {
         this.getMockMvc()
@@ -135,8 +111,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void canGetTodayAlarms() throws Exception {
         this.getMockMvc()
@@ -145,8 +119,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void canGetTodayAlarmsSortedDesc() throws Exception {
         this.getMockMvc()
@@ -155,8 +127,6 @@ public class AlarmsControllerTest extends ControllerTest {
     }
 
     @WithMockUser(roles = "USER")
-    @Transactional
-    @DirtiesContext
     @Test
     public void canGetTodayAlarmsSortedAsc() throws Exception {
         this.getMockMvc()

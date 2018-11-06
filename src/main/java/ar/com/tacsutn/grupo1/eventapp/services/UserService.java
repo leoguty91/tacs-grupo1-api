@@ -6,12 +6,13 @@ import ar.com.tacsutn.grupo1.eventapp.models.UserRequest;
 import ar.com.tacsutn.grupo1.eventapp.repositories.AuthorityRepository;
 import ar.com.tacsutn.grupo1.eventapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.Optional;
 
@@ -37,6 +38,10 @@ public class UserService {
 
     @Transactional
     public User create(User user) {
+        User existingUser = userRepository.findByUsername(user.getUsername());
+        if(existingUser != null){
+            throw new DataIntegrityViolationException("The username is in use");
+        }
         user.setEnabled(true);
         user.setLastPasswordResetDate(new Date());
         user.setAuthorities(authorityRepository.findByName(AuthorityName.ROLE_USER));
@@ -68,6 +73,10 @@ public class UserService {
 
     @Transactional
     public User createAdmin(User user) {
+        User existingUser = userRepository.findByUsername(user.getUsername());
+        if(existingUser != null){
+            throw new DataIntegrityViolationException("The username is in use");
+        }
         user.setEnabled(true);
         user.setLastPasswordResetDate(new Date());
         //List<Authority> lists = Arrays.asList(authorityRepository.findFirstByName(AuthorityName.ROLE_USER), authorityRepository.findFirstByName(AuthorityName.ROLE_ADMIN));
@@ -77,7 +86,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> getById(long id) {
+    public Optional<User> getById(String id) {
         return userRepository.getById(id);
     }
 

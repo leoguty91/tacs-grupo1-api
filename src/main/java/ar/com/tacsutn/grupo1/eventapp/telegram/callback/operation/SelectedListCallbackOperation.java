@@ -42,7 +42,7 @@ public class SelectedListCallbackOperation extends AuthenticatedCallbackOperatio
     @Override
     public void handle(TelegramBot bot, CallbackQuery callbackQuery, CallbackData callbackData) {
         EventId eventId = new EventId(callbackData.getEventId());
-        Long listId = callbackData.getListId();
+        String listId = callbackData.getListId();
 
         getUserOrAlert(bot, callbackQuery)
                 .flatMap(user -> addEventToList(user, listId, eventId))
@@ -58,12 +58,12 @@ public class SelectedListCallbackOperation extends AuthenticatedCallbackOperatio
      */
     private SendMessage answerAddedEventToList(CallbackQuery callbackQuery, EventList eventList) {
         return new SendMessage()
-                .setChatId((long) callbackQuery.getFrom().getId())
+                .setChatId(callbackQuery.getFrom().getId().longValue())
                 .setText("El evento fue añadido a la lista \"" + eventList.getName() + "\".");
     }
 
     @Transactional
-    private Optional<EventList> addEventToList(User user, Long listId, EventId eventId) {
+    private Optional<EventList> addEventToList(User user, String listId, EventId eventId) {
         try {
             eventService.save(eventId);
             return eventListService.addEvent(user, listId, eventId);

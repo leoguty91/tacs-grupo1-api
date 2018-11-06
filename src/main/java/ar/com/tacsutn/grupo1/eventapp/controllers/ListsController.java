@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -50,7 +50,7 @@ public class ListsController {
 
     @GetMapping("/lists/{list_id}")
     @PreAuthorize("hasRole('USER')")
-    public EventList get(@PathVariable Long list_id, HttpServletRequest request) {
+    public EventList get(@PathVariable String list_id, HttpServletRequest request) {
         User user = sessionService.getAuthenticatedUser(request);
         return eventListService.getById(user, list_id).orElseThrow(() ->
             new ResourceNotFoundException("List not found.")
@@ -86,7 +86,7 @@ public class ListsController {
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
-            @PathVariable Long list_id,
+            @PathVariable String list_id,
             HttpServletRequest request) {
 
         User user = sessionService.getAuthenticatedUser(request);
@@ -121,14 +121,13 @@ public class ListsController {
     @PreAuthorize("hasRole('USER')")
     @ApiPageable
     public RestPage<Event> getEvents(
-            @PathVariable Long list_id,
+            @PathVariable String list_id,
             @ApiIgnore Pageable pageable,
             HttpServletRequest request) {
 
         User user = sessionService.getAuthenticatedUser(request);
-        eventListService.getById(user, list_id)
-                .orElseThrow(() -> new ResourceNotFoundException("List not found."));
-        Page<EventId> eventIdPage = eventService.getIdsByEventListId(list_id, pageable);
+         EventList eventList = eventListService.getById(user, list_id).orElseThrow(() -> new ResourceNotFoundException("List not found."));
+        Page<EventId> eventIdPage = eventListService.getListEvents(eventList, pageable);
 
         List<Event> list = eventIdPage.getContent()
             .parallelStream()
@@ -144,9 +143,8 @@ public class ListsController {
 
     @PostMapping("/lists/{list_id}/events")
     @PreAuthorize("hasRole('USER')")
-    @Transactional
     public EventList addEvent(
-            @PathVariable Long list_id,
+            @PathVariable String list_id,
             @RequestBody EventId eventId,
             HttpServletRequest request) {
 
@@ -161,7 +159,7 @@ public class ListsController {
     @DeleteMapping("/lists/{list_id}/events/{event_id}")
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeEvent(@PathVariable Long list_id,
+    public void removeEvent(@PathVariable String list_id,
                             @PathVariable String event_id,
                             HttpServletRequest request) {
 

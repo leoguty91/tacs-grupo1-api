@@ -73,6 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             .authorizeRequests()
 
+            //todo agregar mongo  y darle permit all
             // Un-secure H2 Database
             .antMatchers("/h2-console/**/**").permitAll()
             .antMatchers("/v2/api-docs", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/csrf").permitAll()
@@ -114,6 +115,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/**/*.js"
             )
 
+                //todo agregar mongo al ignore
             // Un-secure H2 Database (for testing purposes, H2 console shouldn't be unprotected in production)
             .and()
             .ignoring()

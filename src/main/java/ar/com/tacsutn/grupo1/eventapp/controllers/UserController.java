@@ -24,66 +24,80 @@ import javax.servlet.http.HttpServletRequest;
 @Api(tags = "Users", description = "user resources")
 public class UserController {
 
-  private final UserService userService;
-  private final EventListService eventListService;
-  private final AlarmService alarmService;
-  private final SessionService sessionService;
+    private final UserService userService;
+    private final EventListService eventListService;
+    private final AlarmService alarmService;
+    private final SessionService sessionService;
 
-  @Autowired
-  public UserController(
-          UserService userService,
-          EventListService eventListService,
-          AlarmService alarmService,
-          SessionService sessionService) {
+    @Autowired
+    public UserController(
+            UserService userService,
+            EventListService eventListService,
+            AlarmService alarmService,
+            SessionService sessionService) {
 
-    this.userService = userService;
-    this.eventListService = eventListService;
-    this.alarmService = alarmService;
-    this.sessionService = sessionService;
-  }
-
-  /**
-   * Returns all users.
-   */
-  @GetMapping("/users")
-  @PreAuthorize("hasRole('ADMIN')")
-  @ApiPageable
-  public RestPage<User> getAll(
-          @ApiIgnore Pageable pageable,
-          HttpServletRequest request) {
-
-    Page<User> list = userService.getAllUsers(PageRequest.of(0, 50));
-    return new RestPage<>(list);
-  }
-
-
-  /**
-   * Returns user's lists.
-   */
-  @GetMapping("/users/{user_id}/lists")
-  @PreAuthorize("hasRole('ADMIN')")
-  @ApiPageable
-  public RestPage<EventList> getUserLists(
-          @PathVariable("user_id") Long userId,
-          HttpServletRequest request) {
-    User user = userService.getById(userId).orElseThrow(() -> new ResourceNotFoundException("User id not found"));
-    Page<EventList> list = eventListService.getListsByUserId(user, PageRequest.of(0, 50));
-    return new RestPage<>(list);
-  }
-
-  /**
-   * Create a new user account.
-   *
-   * @return the created user.
-   */
-  @PostMapping("/users")
-  public User createUser(@RequestBody User user) {
-    try {
-      return userService.create(user);
-    } catch (DataIntegrityViolationException e) {
-      throw new BadRequestException("The username is in use");
+        this.userService = userService;
+        this.eventListService = eventListService;
+        this.alarmService = alarmService;
+        this.sessionService = sessionService;
     }
-  }
+
+    /**
+     * Returns all users.
+     */
+    @GetMapping("/users")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ApiPageable
+    public RestPage<User> getAll(
+            @ApiIgnore Pageable pageable,
+            HttpServletRequest request) {
+
+        Page<User> list = userService.getAllUsers(PageRequest.of(0, 50));
+        return new RestPage<>(list);
+    }
+
+
+    /**
+     * Returns user's lists.
+     */
+    @GetMapping("/users/{user_id}/lists")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ApiPageable
+    public RestPage<EventList> getUserLists(
+            @PathVariable("user_id") String userId,
+            HttpServletRequest request) {
+        User user = userService.getById(userId).orElseThrow(()-> new ResourceNotFoundException("User id not found"));
+        Page<EventList> list = eventListService.getListsByUserId(user, PageRequest.of(0, 50));
+        return new RestPage<>(list);
+    }
+
+        /**
+         * Create a new user account.
+         *
+         * @return the created user.
+         */
+        @PostMapping("/users")
+        public User createUser(@RequestBody User user){
+            try {
+                return userService.create(user);
+            } catch (DataIntegrityViolationException e) {
+                throw new BadRequestException("The username is in use");
+            }
+        }
+
+
+    /**
+     * Updates the authenticated user's information.
+     *
+     * @return the updated authenticated user.
+     */
+    @PatchMapping("/users/info")
+    @PreAuthorize("hasRole('USER')")
+    public User updateUserInfo(@RequestBody UserRequest userRequest, HttpServletRequest request) {
+        User user = sessionService.getAuthenticatedUser(request);
+        return userService.update(user, userRequest);
+    }
+
 
   /**
    * Returns a single user by identifier.
@@ -94,7 +108,7 @@ public class UserController {
    */
   @GetMapping("/users/{user_id}")
   @PreAuthorize("hasRole('ADMIN')")
-  public User getUser(@PathVariable("user_id") Long userId) {
+  public User getUser(@PathVariable("user_id") String userId) {
     return userService
             .getById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("User id not found"));
@@ -111,17 +125,6 @@ public class UserController {
     return sessionService.getAuthenticatedUser(request);
   }
 
-  /**
-   * Updates the authenticated user's information.
-   *
-   * @return the updated authenticated user.
-   */
-  @PatchMapping("/users/info")
-  @PreAuthorize("hasRole('USER')")
-  public User updateUserInfo(@RequestBody UserRequest userRequest, HttpServletRequest request) {
-    User user = sessionService.getAuthenticatedUser(request);
-    return userService.update(user, userRequest);
-  }
 
   /**
    * Returns the total number of lists by user.
@@ -132,7 +135,7 @@ public class UserController {
    */
   @GetMapping("/users/{user_id}/total_lists")
   @PreAuthorize("hasRole('ADMIN')")
-  public TotalLists getTotalOfListEvents(@PathVariable("user_id") Long userId) {
+  public TotalLists getTotalOfListEvents(@PathVariable("user_id") String userId) {
     User user = userService.getById(userId).orElseThrow(() -> new ResourceNotFoundException("User id not found"));
     TotalLists totalLists = new TotalLists();
     totalLists.setTotalLists(eventListService.getTotalEventListByUserId(userId));
@@ -148,7 +151,7 @@ public class UserController {
    */
   @GetMapping("/users/{user_id}/total_alarms")
   @PreAuthorize("hasRole('ADMIN')")
-  public TotalAlarms getTotalOfAlarms(@PathVariable("user_id") Long userId) {
+  public TotalAlarms getTotalOfAlarms(@PathVariable("user_id") String userId) {
     User user = userService.getById(userId).orElseThrow(() -> new ResourceNotFoundException("User id not found"));
     TotalAlarms totalAlarms = new TotalAlarms();
     totalAlarms.setTotalAlarms(alarmService.getTotalAlarmsByUserId(userId));
