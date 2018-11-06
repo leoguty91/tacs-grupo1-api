@@ -24,6 +24,9 @@ services:
       context: ./
       dockerfile: Dockerfile
     image: event-app
+    volumes:
+      - ./:/usr/src/eventapp/
+    entrypoint: /usr/src/eventapp/entrypoint.sh
     environment:
       - MONGODB_URI=mongodb://mongodb.eventapp.com/eventDB
     ports:
