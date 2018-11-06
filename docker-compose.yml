@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      event-app:
+        aliases:
+          - mongodb.eventapp.com
+  server:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: event-app
+    environment:
+      - MONGODB_URI=mongodb://mongodb.eventapp.com/eventDB
+    ports:
+      - 8080:8080
+    networks:
+      - event-app
+    depends_on:
+      - mongo
+networks:
+  event-app:
+    driver: bridge
