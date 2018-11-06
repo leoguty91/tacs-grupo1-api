@@ -10,6 +10,15 @@ services:
       event-app:
         aliases:
           - mongodb.eventapp.com
+  maven:
+    build:
+      context: ./
+      dockerfile: Dockerfile-build
+    image: build-app
+    volumes:
+      - ./:/usr/src/eventapp/
+    networks:
+      - event-app
   server:
     build:
       context: ./
