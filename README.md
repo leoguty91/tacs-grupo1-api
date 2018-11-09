@@ -39,3 +39,31 @@ Para las alarmas utilizamos una estrategia lazy (hasta que tengamos Telegram y h
 Nuestra **nueva documentación** está basada en swagger y se puede acceder desde el siguiente link: [`https://tacs-utn-frba-grupo1.herokuapp.com/swagger-ui.html`](https://tacs-utn-frba-grupo1.herokuapp.com/swagger-ui.html) y localmente desde: [`http://localhost:8080/swagger-ui.html`](http://localhost:8080/swagger-ui.html) .
 
 **Importante:** Hemos deprecado la documentación en postman porque hemos alcanzado el límite impuesto para TEAMS.
+
+Entrega 3
+-
+Para el trabajo de front se utilizó un repositorio aparte, ubicado en la siguiente dirección:
+https://github.com/leoguty91/tacs-grupo1-frontend
+
+El bot de telegram se encuentra en:
+https://t.me/TacsUTNGrupo1Bot
+
+Entrega 4
+-
+Para esta entrega, se cambió la Base de datos de H2 a MongoDB
+
+Además, la aplicación se encuentra deployada en heroku:
+https://tacs-utn-frba-grupo1.herokuapp.com/
+
+Entrega 5
+-
+Docker:
+Agregamos al proyecto la posibilidad de que se corra virtualizado mediante docker. La compilación del proyecto Maven se lleva a cabo dentro del docker, y la ejecución tanto de la bd, como del servidor también se ejecutan dentro de un docker.
+Para ejecutarlo mediante docker se deben ejecutar los siguientes comandos:<br />
+    `docker-compose build`<br />
+    `docker-compose up`<br />
+
+**Aclaración:** Actualmente el front está apuntando a las rutas de producción (en heroku). Para probar este ambiente mediante docker, se deben clonar los proyectos api y front.
+Luego, desde el proyecto front ejecutar:<br />
+    `npm run buildlocal`<br />
+Por último, ejecutarlo mediante docker con los comandos mencionados arriba.
