@@ -49,9 +49,6 @@ public abstract class ControllerTest {
     private EventRepository eventRepository;
 
     @Autowired
-    private EventListRepository listRepository;
-
-    @Autowired
     private AlarmRepository alarmRepository;
 
     @Autowired
@@ -175,7 +172,8 @@ public abstract class ControllerTest {
         listService.save(eventList3);
     }
 
-    private void cleanDB(){
+    @After
+    public void cleanDB(){
         userRepository.deleteAll();
         authorityRepository.deleteAll();
         eventListRepository.deleteAll();
@@ -190,11 +188,6 @@ public abstract class ControllerTest {
 
     @Before
     public void before() {
-        authorityRepository.deleteAll();
-        userRepository.deleteAll();
-        eventRepository.deleteAll();
-        listRepository.deleteAll();
-        alarmRepository.deleteAll();
         setAuthorities();
         setUsers();
         setEvents();
@@ -208,11 +201,6 @@ public abstract class ControllerTest {
                 .addFilters(springSecurityFilterChain)
                 .apply(springSecurity())
                 .build();
-    }
-
-    @After
-    public void after() {
-        cleanDB();
     }
 
     @Test

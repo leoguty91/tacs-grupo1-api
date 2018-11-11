@@ -1,11 +1,9 @@
 package ar.com.tacsutn.grupo1.eventapp.services;
 
-//import ar.com.tacsutn.grupo1.eventapp.BootstrapData;
 import ar.com.tacsutn.grupo1.eventapp.models.EventId;
 import ar.com.tacsutn.grupo1.eventapp.models.EventList;
 import ar.com.tacsutn.grupo1.eventapp.models.User;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -26,9 +24,6 @@ import static org.junit.Assert.assertFalse;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class EventServiceTest {
-//    @MockBean
-//    private BootstrapData bootstrapData;
-
     @Mock
     private User user1;
 
@@ -71,7 +66,6 @@ public class EventServiceTest {
         assertEquals(1, eventList.getEvents().size());
     }
 
-    @Ignore
     @Test
     public void canFindAllEventsBetweenDates() {
         addAllEvents();
@@ -81,7 +75,7 @@ public class EventServiceTest {
 
         long eventsCount = eventService.getTotalEventsBetween(from, to);
 
-        assertEquals(4, eventsCount);
+        assertEquals(3, eventsCount);
     }
 
     @Test
