@@ -6,6 +6,10 @@ import ar.com.tacsutn.grupo1.eventapp.models.Event;
 import ar.com.tacsutn.grupo1.eventapp.models.EventId;
 import ar.com.tacsutn.grupo1.eventapp.models.EventList;
 import ar.com.tacsutn.grupo1.eventapp.models.User;
+import ar.com.tacsutn.grupo1.eventapp.repositories.EventListRepository;
+import ar.com.tacsutn.grupo1.eventapp.repositories.EventRepository;
+import ar.com.tacsutn.grupo1.eventapp.repositories.UserRepository;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -23,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,11 +41,17 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class EventListServiceTest {
-//    @MockBean
-//    private BootstrapData bootstrapData;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EventRepository eventRepository;
+
+    @Autowired
+    private EventListRepository eventListRepository;
 
     private User user1, user2;
 
@@ -72,15 +83,13 @@ public class EventListServiceTest {
         assertEquals(eventList1.getId(), result.getId());
     }
 
-//    @Test
-//    public void shouldNotGetEventsListIfNotExists() {
-//        assertFalse(listService.getById(-500L).isPresent());
-//    }
+    @Test
+    public void shouldNotGetEventsListIfNotExists() {
+        assertFalse(listService.getById("-500").isPresent());
+    }
 
     @Test
-    @Ignore
     public void canGetAllEventLists() {
-        listService.getLists().getContent().iterator().forEachRemaining(e -> System.out.println(e.getName()));
         assertArrayEquals(new EventList[]{eventList1, eventList3}, listService.getLists().getContent().toArray());
     }
 
@@ -112,11 +121,11 @@ public class EventListServiceTest {
 
         assertEquals(0L, eventsCount(user1));
     }
-//
-//    @Test(expected = NoSuchElementException.class)
-//    public void shouldNotDeleteListIfNotExists() {
-//        listService.delete(user1, -2000L);
-//    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void shouldNotDeleteListIfNotExists() {
+        listService.delete(user1, "-2000");
+    }
 
     @Test(expected = NoSuchElementException.class)
     public void shouldNotDeleteListIfNotOwner() {
@@ -132,10 +141,10 @@ public class EventListServiceTest {
         assertEquals("TestRename", renamedList.getName());
     }
 
-//    @Test(expected = NoSuchElementException.class)
-//    public void shouldNotChangeListNameIfNotExists() {
-//        listService.rename(user1, -2000L, "TestRename");
-//    }
+    @Test(expected = NoSuchElementException.class)
+    public void shouldNotChangeListNameIfNotExists() {
+        listService.rename(user1, "-2000", "TestRename");
+    }
 
     @Test(expected = NoSuchElementException.class)
     public void shouldNotChangeListNameIfNotOwner() {
@@ -178,34 +187,34 @@ public class EventListServiceTest {
         assertTrue(commonEvents.isEmpty());
     }
 
-//    @Test(expected = NoSuchElementException.class)
-//    public void shouldNotFindCommonEventsIfFirstIdDoesNotExist() {
-//        getCommonEvents(-2000L, eventList1.getId());
-//    }
-//
-//    @Test(expected = NoSuchElementException.class)
-//    public void shouldNotFindCommonEventsIfSecondIdDoesNotExist() {
-//        getCommonEvents(eventList1.getId(), -4000L);
-//    }
-//
-//    @Test(expected = NoSuchElementException.class)
-//    public void shouldNotFindCommonEventsIfNeitherIdsDoesNotExist() {
-//        getCommonEvents(-2000L, -4000L);
-//    }
-//
-//    @Test
-//    public void canFindUserCountInterestedInEvent() {
-//        int interestedCount = eventService.getTotalUsersByEventId("0");
-//
-//        assertEquals(2, interestedCount);
-//    }
-//
-//    @Test
-//    public void shouldBe0IfNoUsersAreInterestedInEvent() {
-//        int interestedCount = eventService.getTotalUsersByEventId("foo");
-//
-//        assertEquals(0, interestedCount);
-//    }
+    @Test(expected = NoSuchElementException.class)
+    public void shouldNotFindCommonEventsIfFirstIdDoesNotExist() {
+        getCommonEvents("-2000", eventList1.getId());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void shouldNotFindCommonEventsIfSecondIdDoesNotExist() {
+        getCommonEvents(eventList1.getId(), "-4000");
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void shouldNotFindCommonEventsIfNeitherIdsDoesNotExist() {
+        getCommonEvents("-2000", "-4000");
+    }
+
+    @Test
+    public void canFindUserCountInterestedInEvent() {
+        long interestedCount = eventService.getTotalUsersByEventId("0");
+
+        assertEquals(2, interestedCount);
+    }
+
+    @Test
+    public void shouldBe0IfNoUsersAreInterestedInEvent() {
+        long interestedCount = eventService.getTotalUsersByEventId("foo");
+
+        assertEquals(0, interestedCount);
+    }
 
     private void setUsers() {
         user1 = new User("JohnDoemann1", "1234", "John", "Doemann", "john.doemann@test.com", true, new Date(), null);
@@ -277,5 +286,12 @@ public class EventListServiceTest {
         Path path = Paths.get(testPath.toString(), arr);
 
         return path.toString();
+    }
+
+    @After
+    public void cleanDB() {
+        userRepository.deleteAll();
+        eventListRepository.deleteAll();
+        eventRepository.deleteAll();
     }
 }

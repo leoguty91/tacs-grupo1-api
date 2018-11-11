@@ -64,4 +64,12 @@ public class EventList {
     public void removeEvent(EventId event) {
         this.events.remove(event);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof EventList) {
+            return id.equals(((EventList) obj).id);
+        }
+        return super.equals(obj);
+    }
 }
