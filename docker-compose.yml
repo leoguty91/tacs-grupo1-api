@@ -21,9 +21,22 @@ services:
     ports:
       - 8080:8080
     networks:
-      - event-app
+      event-app:
+        aliases:
+          - server.eventapp.com
     depends_on:
       - mongo
+  front:
+    build:
+      context: ../tacs-grupo1-frontend/
+      dockerfile: Dockerfile
+    image: event-app-front
+    ports:
+      - 4200:4200
+    networks:
+      - event-app
+    depends_on:
+      - server
 networks:
   event-app:
     driver: bridge
