@@ -62,8 +62,3 @@ Agregamos al proyecto la posibilidad de que se corra virtualizado mediante docke
 Para ejecutarlo mediante docker se deben ejecutar los siguientes comandos:<br />
     `docker-compose build`<br />
     `docker-compose up`<br />
-
-**Aclaración:** Actualmente el front está apuntando a las rutas de producción (en heroku). Para probar este ambiente mediante docker, se deben clonar los proyectos api y front.
-Luego, desde el proyecto front ejecutar:<br />
-    `npm run buildlocal`<br />
-Por último, ejecutarlo mediante docker con los comandos mencionados arriba.
