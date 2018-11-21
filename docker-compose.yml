@@ -16,14 +16,32 @@ services:
       dockerfile: Dockerfile
     image: event-app
     entrypoint: /usr/src/eventapp/entrypoint.sh
+    volumes:
+      - ./src/main/resources/public:/usr/src/eventapp/src/main/resources/public
     environment:
       - MONGODB_URI=mongodb://mongodb.eventapp.com/eventDB
     ports:
       - 8080:8080
     networks:
-      - event-app
+      event-app:
+        aliases:
+          - server.eventapp.com
     depends_on:
       - mongo
+  front:
+    build:
+      context: ../tacs-grupo1-frontend/
+      dockerfile: Dockerfile
+    image: event-app-front
+    entrypoint: /usr/src/eventapp/entrypoint.sh
+    volumes:
+      - ./:/usr/src/eventapp/back
+    ports:
+      - 4200:4200
+    networks:
+      - event-app
+    depends_on:
+      - server
 networks:
   event-app:
     driver: bridge
